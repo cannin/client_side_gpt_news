@@ -36,7 +36,8 @@ window.onload = function() {
         .then(str => {
             const parser = new DOMParser();
             const xmlDoc = parser.parseFromString(str, "text/xml");
-            const items = Array.from(xmlDoc.getElementsByTagName("item")).slice(0, maxItems);
+            //const items = Array.from(xmlDoc.getElementsByTagName("item")).slice(0, maxItems);
+            const items = Array.from(xmlDoc.getElementsByTagName("item"));
 
             // Iterate over each RSS item and send the description to the OpenAI API
             items.forEach(item => {
