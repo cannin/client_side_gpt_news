@@ -53,7 +53,7 @@ window.onload = function() {
                                 At the end, in parentheses put the first news source mentioned in the description.
                                 Do not write any text after the source in parentheses.
                                 Strongly avoid HTML or Markdown formatting or any http links in the summaries. 
-                                Put bold <b> HTML tags around important nouns in the summaries.
+                                Put bold <b> HTML tags around important words and keywords in the summaries.
                                 IMPORTANT USE HTML <b> not Markdown tags!!!
                                 Example: <b>Biden</b> visited <b>Vietnam</b> today. 
                                 INPUT TEXT: ${description}`;
