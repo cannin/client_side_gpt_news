@@ -54,6 +54,7 @@ window.onload = function() {
                                 Do not write any text after the source in parentheses.
                                 Strongly avoid HTML or Markdown formatting or any http links in the summaries. 
                                 Put bold <b> HTML tags around important words and keywords in the summaries.
+                                At least 1 word must be made bold per summary. 
                                 IMPORTANT USE HTML <b> not Markdown tags!!!
                                 Example: <b>Biden</b> visited <b>Vietnam</b> today. 
                                 INPUT TEXT: ${description}`;
@@ -86,7 +87,8 @@ window.onload = function() {
                 })
                 .then(apiData => {
                     let summary = apiData.choices[0].message.content;
-                    summary = summary.replace(/\*\*/g, '');
+                    //summary = summary.replace(/\*\*/g, '');
+                    summary = summary.replace(/\*\*(.*?)\*\*/g, '<b>$1</b>');
 
                     const listItem = document.createElement("li");
                     listItem.innerHTML = summary;
