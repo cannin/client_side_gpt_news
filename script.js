@@ -25,7 +25,7 @@ window.onload = function() {
     // OpenAI API URL
     const apiUrl = "https://api.openai.com/v1/chat/completions";
     //const rssUrl = 'https://news.google.com/rss?hl=en-US&gl=US&ceid=US:en';
-    const maxItems = 10;
+    const maxItems = 15;
 
     // Fetch the Google News RSS feed
     fetch(rssUrl)
@@ -36,8 +36,8 @@ window.onload = function() {
         .then(str => {
             const parser = new DOMParser();
             const xmlDoc = parser.parseFromString(str, "text/xml");
-            //const items = Array.from(xmlDoc.getElementsByTagName("item")).slice(0, maxItems);
-            const items = Array.from(xmlDoc.getElementsByTagName("item"));
+            const items = Array.from(xmlDoc.getElementsByTagName("item")).slice(0, maxItems);
+            //const items = Array.from(xmlDoc.getElementsByTagName("item"));
 
             // Iterate over each RSS item and send the description to the OpenAI API
             items.forEach(item => {
