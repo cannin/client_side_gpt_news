@@ -52,7 +52,10 @@ window.onload = function() {
                 const prompt = `Summarize the INPUT TEXT in one concise 1 or 2 sentence summary without newlines.
                                 At the end, in parentheses put the first news source mentioned in the description.
                                 Do not write any text after the source in parentheses.
-                                Do not include any HTML or Markdown formatting or any http links in the summaries.
+                                Strongly avoid HTML or Markdown formatting or any http links in the summaries. 
+                                Put bold <b> HTML tags around important nouns in the summaries.
+                                IMPORTANT USE HTML <b> not Markdown tags!!!
+                                Example: <b>Biden</b> visited <b>Vietnam</b> today. 
                                 INPUT TEXT: ${description}`;
 
                 console.log("Prompt sent: " + prompt);
@@ -82,9 +85,11 @@ window.onload = function() {
                     return response.json();
                 })
                 .then(apiData => {
-                    const summary = apiData.choices[0].message.content;
+                    let summary = apiData.choices[0].message.content;
+                    summary = summary.replace(/\*\*/g, '');
+
                     const listItem = document.createElement("li");
-                    listItem.textContent = summary;
+                    listItem.innerHTML = summary;
                     listItem.style.marginBottom = "10px";
                     mainDiv.appendChild(listItem);
                 })
