@@ -54,6 +54,8 @@ window.onload = function() {
                                 Do not write any text after the source in parentheses.
                                 Strongly avoid HTML or Markdown formatting or any http links in the summaries. 
                                 Put bold <b> HTML tags around important words and keywords in the summaries.
+                                highlight key words and phrases (e.g., names, institutes, locations, amounts) with 
+                                bold in the following text except news source at the end.
                                 At least 1 word must be made bold per summary. 
                                 IMPORTANT USE HTML <b> not Markdown tags!!!
                                 Example: <b>Biden</b> visited <b>Vietnam</b> today. 
