@@ -19,7 +19,7 @@ window.onload = function() {
     if (rssUrl) localStorage.setItem('rssUrl', rssUrl);
 
     // Set up the main container
-    document.body.innerHTML = '<div style="padding:24px;"><h1>Top News</h1><p><ol id="main"></ol></p></div>';
+    document.body.innerHTML = '<div><h1>Top News</h1><p><ol id="main"></ol></p></div>';
     const mainDiv = document.getElementById('main');
 
     // OpenAI API URL
