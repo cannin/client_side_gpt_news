@@ -19,7 +19,6 @@ window.onload = function() {
     if (rssUrl) localStorage.setItem('rssUrl', rssUrl);
 
     // Set up the main container
-    document.body.innerHTML = '<div><h1>Top News</h1><p><ol id="main"></ol></p></div>';
     const mainDiv = document.getElementById('main');
 
     // OpenAI API URL
@@ -61,7 +60,7 @@ window.onload = function() {
                                 Example: <b>Biden</b> visited <b>Vietnam</b> today. 
                                 INPUT TEXT: ${description}`;
 
-                console.log("Prompt sent: " + prompt);
+                console.log("Prompt: " + prompt);
 
                 // API request data
                 const data = {
