@@ -26,6 +26,7 @@ Table of Contents:
 	--cmed:  #d1d1d1;
 	--clink: #07c;
 	--cemph: #088;    --cemphbg: #0881;
+	--cb: indianred; 
 }
 
 html[data-theme='dark'] {
@@ -35,6 +36,7 @@ html[data-theme='dark'] {
 	--cmed:  #566;
 	--clink: #1ad;
 	--cemph: #0b9;    --cemphbg: #0b91;
+	--cb: indianred;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -45,6 +47,7 @@ html[data-theme='dark'] {
 		--cmed:  #566;
 		--clink: #1ad;
 		--cemph: #0b9;    --cemphbg: #0b91;
+		--cb: indianred;
 	}	
 }
 
@@ -155,7 +158,7 @@ nav { width: 100%; background-color: var(--clight); }
 
 /* 4. Extra Style –––––––––––––––––––––––––––––––––––––– */
 
-b { color: "indianred" }
+b { color: var(--cb) }
 
 /* Auto Numbering: figure/tables/headings/cite */
 article { counter-reset: h2 0 h3 0 tab 0 fig 0 lst 0 ref 0 eq 0; }
