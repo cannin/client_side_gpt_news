@@ -1,4 +1,3 @@
-// script.js
 window.onload = function() {
     // Function to get query parameter value
     function getQueryParam(param) {
@@ -90,7 +89,7 @@ window.onload = function() {
                 .then(responses => {
                     const [openAiResponse, decodingResponse] = responses;
 
-                    if (!openAiResponse.ok) throw new Error("API request to OpenAI failed");
+                    if (!openAiResponse.ok) throw new Error("ERROR: API request to OpenAI failed");
                     if (!decodingResponse.ok) decodedLink = "";
 
                     return Promise.all([openAiResponse.json(), decodingResponse.text()]);
@@ -107,7 +106,6 @@ window.onload = function() {
 
                     const listItem = document.createElement("li");
                     listItem.innerHTML = summary;
-                    listItem.style.marginBottom = "10px";
                     mainDiv.appendChild(listItem);
                 })
                 .catch(error => {
