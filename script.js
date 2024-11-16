@@ -25,7 +25,7 @@ window.onload = function() {
 
     // OpenAI API URL
     const apiUrl = "https://api.openai.com/v1/chat/completions";
-    const maxItems = 10;
+    const maxItems = 15;
 
     // Fetch the Google News RSS feed
     fetch(rssUrl)
