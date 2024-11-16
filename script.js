@@ -89,7 +89,7 @@ window.onload = function() {
                 console.log("Prompt: " + prompt);
 
                 // API request data
-                let systemPrompt = `You are a helpful assistant that will produce a response this language: ${language}`
+                let systemPrompt = `You are a helpful assistant. You must translate your responses to this language: ${language}`
 
                 const data = {
                     model: "gpt-4o-mini",
