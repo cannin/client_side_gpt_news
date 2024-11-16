@@ -5,19 +5,37 @@ window.onload = function() {
         return urlParams.get(param);
     }
 
-    // Get the values of "apikey", "orgId", and "projId" from the URL
-    let apiKey = getQueryParam('apikey');
-    let orgId = getQueryParam('orgId');
-    let projId = getQueryParam('projId');
-    let rssUrl = getQueryParam('rssUrl');
-    let decodingUrl = getQueryParam('decodingUrl');
+    // Function to get value from localStorage or query param
+    function getValue(param) {
+        let value = getQueryParam(param);
+        if (value) {
+            localStorage.setItem(param, value);
+        } else {
+            value = localStorage.getItem(param);
+        }
+        if (!value) {
+            console.error(`ERROR: ${param} is not provided and not found in localStorage`);
+        }
+        return value;
+    }
 
-    // Store the values in local storage if they are present
-    if (apiKey) localStorage.setItem('apikey', apiKey);
-    if (orgId) localStorage.setItem('orgId', orgId);
-    if (projId) localStorage.setItem('projId', projId);
-    if (rssUrl) localStorage.setItem('rssUrl', rssUrl);
-    if (decodingUrl) localStorage.setItem('decodingUrl', decodingUrl);
+    // Get values from query params or localStorage
+    let apiKey = getValue('apikey');
+    let orgId = getValue('orgId');
+    let projId = getValue('projId');
+    let rssUrl = getValue('rssUrl');
+    let decodingUrl = getValue('decodingUrl');
+
+    // If any of the required parameters are missing, stop execution
+    if (!apiKey || !orgId || !projId || !rssUrl || !decodingUrl) {
+        console.error("ERROR: Missing required parameter(s)");
+        if (!apiKey) console.error("Missing: apiKey");
+        if (!orgId) console.error("Missing: orgId");
+        if (!projId) console.error("Missing: projId");
+        if (!rssUrl) console.error("Missing: rssUrl");
+        if (!decodingUrl) console.error("Missing: decodingUrl");
+        return;
+    }
 
     // Set up the main container
     const mainDiv = document.getElementById('main');
