@@ -99,12 +99,10 @@ window.onload = function() {
                     // Strip start and ending quotes from decodedLink
                     decodedLink = decodedLink.replace(/^"|"$/g, "");
 
-                    console.log(`LINK: ${decodedLink}`);
-
                     let summary = apiData.choices[0].message.content;
                     summary = summary.replace(/\*\*(.*?)\*\*/g, '<b>$1</b>');
                     if (decodedLink && decodedLink.trim() !== "") {
-                        summary += ` <a href='${decodedLink}' target='_blank'>(link)</a>`;
+                        summary += ` <a href='${decodedLink}' target='_blank'>[Link]</a>`;
                     }
 
                     const listItem = document.createElement("li");
