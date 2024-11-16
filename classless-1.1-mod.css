@@ -83,7 +83,7 @@ body {
 	max-width: var(--width);
 	font: var(--font-p);
 	color: var(--cfg);
-	padding: 0.5rem .6rem 0; /* okay because no header */
+	padding: 0.25rem .6rem 0; /* okay because no header */
 	overflow-x: hidden;
 }
 body > footer { margin: 10rem 0 0; font-size: 90%; }
@@ -102,7 +102,7 @@ li:not(:last-child), dd:not(:last-child) { margin-bottom: .5rem; }
 dt { font-weight: bold; }
 
 /* headings */
-h1, h2, h3, h4, h5 { margin: 0.5em 0 .5rem; font: var(--font-h); line-height: 1.2em; clear: both; }
+h1, h2, h3, h4, h5 { margin: 0.25em 0 .5rem; font: var(--font-h); line-height: 1.2em; clear: both; }
 h1+h2, h2+h3, h3+h4, h4+h5 { margin-top: .5em; padding-top: 0; }  /* non-clashing headings */
 h1 { font-size: 2.2em; font-weight: 300; }
 h2 { font-size: 2.0em; font-weight: 300; font-variant: small-caps; }
