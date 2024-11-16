@@ -30,15 +30,17 @@ window.onload = function() {
     let rssUrl = getParamValue('rssUrl');
     let decodingUrl = getParamValue('decodingUrl');
     let maxItems = getParamValue('maxItems') || 15;
+    let language = getParamValue('language') || "english";
 
     // If any of the required parameters are missing, stop execution
-    if (!apiKey || !orgId || !projId || !rssUrl || !decodingUrl || !maxItems) {
+    if (!apiKey || !orgId || !projId || !rssUrl || !decodingUrl || !maxItems || !language) {
         if (!apiKey) console.error("ERROR: Missing: apiKey");
         if (!orgId) console.error("ERROR: Missing: orgId");
         if (!projId) console.error("ERROR: Missing: projId");
         if (!rssUrl) console.error("ERROR: Missing: rssUrl");
         if (!decodingUrl) console.error("ERROR: Missing: decodingUrl");
         if (!maxItems) console.error("ERROR: Missing: maxItems");
+        if (!language) console.error("ERROR: Missing: language");
 
         return;
     }
@@ -70,7 +72,7 @@ window.onload = function() {
                 const tmp = document.createElement("div");
                 tmp.innerHTML = description;
                 description = tmp.textContent || tmp.innerText || "";
-
+                
                 // Create the prompt for the API
                 const prompt = `Summarize the INPUT TEXT in one concise 1 or 2 sentence without newlines.
                                 At the end, in parentheses put the first news source mentioned in the description.
@@ -87,10 +89,12 @@ window.onload = function() {
                 console.log("Prompt: " + prompt);
 
                 // API request data
+                let systemPrompt = `You are a helpful assistant that will produce a response this language: ${language}`
+
                 const data = {
                     model: "gpt-4o-mini",
                     messages: [
-                        { role: "system", content: "You are a helpful assistant." },
+                        { role: "system", content: systemPrompt },
                         { role: "user", content: prompt }
                     ]
                 };
