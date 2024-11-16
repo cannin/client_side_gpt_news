@@ -11,12 +11,14 @@ window.onload = function() {
     let orgId = getQueryParam('orgId');
     let projId = getQueryParam('projId');
     let rssUrl = getQueryParam('rssUrl');
+    let decodingUrl = getQueryParam('decodingUrl');
 
     // Store the values in local storage if they are present
     if (apiKey) localStorage.setItem('apikey', apiKey);
     if (orgId) localStorage.setItem('orgId', orgId);
     if (projId) localStorage.setItem('projId', projId);
     if (rssUrl) localStorage.setItem('rssUrl', rssUrl);
+    if (decodingUrl) localStorage.setItem('decodingUrl', decodingUrl);
 
     // Set up the main container
     document.body.innerHTML = '<div style="padding:24px;"><h1>Top News</h1><p><ol id="main"></ol></p></div>';
@@ -24,24 +26,24 @@ window.onload = function() {
 
     // OpenAI API URL
     const apiUrl = "https://api.openai.com/v1/chat/completions";
-    //const rssUrl = 'https://news.google.com/rss?hl=en-US&gl=US&ceid=US:en';
-    const maxItems = 15;
+    const maxItems = 10;
 
     // Fetch the Google News RSS feed
     fetch(rssUrl)
         .then(response => {
-            if (!response.ok) throw new Error("Failed to fetch RSS feed");
+            if (!response.ok) throw new Error("ERROR: Failed to fetch RSS feed");
             return response.text();
         })
         .then(str => {
             const parser = new DOMParser();
             const xmlDoc = parser.parseFromString(str, "text/xml");
             const items = Array.from(xmlDoc.getElementsByTagName("item")).slice(0, maxItems);
-            //const items = Array.from(xmlDoc.getElementsByTagName("item"));
 
             // Iterate over each RSS item and send the description to the OpenAI API
             items.forEach(item => {
                 let description = item.getElementsByTagName("description")[0].textContent;
+                let link = item.getElementsByTagName("link")[0].textContent;
+                link = link.replace("?oc=5", "");
 
                 // Strip HTML tags from the description
                 const tmp = document.createElement("div");
@@ -49,7 +51,7 @@ window.onload = function() {
                 description = tmp.textContent || tmp.innerText || "";
 
                 // Create the prompt for the API
-                const prompt = `Summarize the INPUT TEXT in one concise 1 or 2 sentence summary without newlines.
+                const prompt = `Summarize the INPUT TEXT in one concise 1 or 2 sentence without newlines.
                                 At the end, in parentheses put the first news source mentioned in the description.
                                 Do not write any text after the source in parentheses.
                                 Strongly avoid HTML or Markdown formatting or any http links in the summaries. 
@@ -70,25 +72,39 @@ window.onload = function() {
                     ]
                 };
 
-                // Send the request to OpenAI
-                fetch(apiUrl, {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                        "Authorization": `Bearer ${apiKey}`,
-                        "OpenAI-Organization": orgId,
-                        "OpenAI-Project": projId
-                    },
-                    body: JSON.stringify(data)
+                // Make both OpenAI and decoding API requests in parallel
+                Promise.all([
+                    fetch(apiUrl, {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                            "Authorization": `Bearer ${apiKey}`,
+                            "OpenAI-Organization": orgId,
+                            "OpenAI-Project": projId
+                        },
+                        body: JSON.stringify(data)
+                    }),
+                    fetch(`${decodingUrl}?url=${encodeURIComponent(link)}`)
+                ])
+                .then(responses => {
+                    const [openAiResponse, decodingResponse] = responses;
+
+                    if (!openAiResponse.ok) throw new Error("API request to OpenAI failed");
+                    if (!decodingResponse.ok) decodedLink = "";
+
+                    return Promise.all([openAiResponse.json(), decodingResponse.text()]);
                 })
-                .then(response => {
-                    if (!response.ok) throw new Error("API request failed");
-                    return response.json();
-                })
-                .then(apiData => {
+                .then(([apiData, decodedLink]) => {
+                    // Strip start and ending quotes from decodedLink
+                    decodedLink = decodedLink.replace(/^"|"$/g, "");
+
+                    console.log(`LINK: ${decodedLink}`);
+
                     let summary = apiData.choices[0].message.content;
-                    //summary = summary.replace(/\*\*/g, '');
                     summary = summary.replace(/\*\*(.*?)\*\*/g, '<b>$1</b>');
+                    if (decodedLink && decodedLink.trim() !== "") {
+                        summary += ` <a href='${decodedLink}' target='_blank'>(link)</a>`;
+                    }
 
                     const listItem = document.createElement("li");
                     listItem.innerHTML = summary;
@@ -96,11 +112,11 @@ window.onload = function() {
                     mainDiv.appendChild(listItem);
                 })
                 .catch(error => {
-                    console.error("Error fetching summary:", error);
+                    console.error("ERROR: Fetching summary or decoding link:", error);
                 });
             });
         })
         .catch(error => {
-            console.error("Error fetching RSS feed:", error);
+            console.error("ERROR: Fetching RSS feed:", error);
         });
 };
