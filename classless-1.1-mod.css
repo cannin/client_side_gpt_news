@@ -24,9 +24,10 @@ Table of Contents:
 	--cfg:   #433;    --cbg:    #fff;
 	--cdark: #888;    --clight: #f5f6f7;
 	--cmed:  #d1d1d1;
-	/* --clink: #07c; */
+	/* --clink: #07c; --cemph: #088; */
 	--clink: indianred; 
-	--cemph: #088;    --cemphbg: #0881;
+	--cemph: var(--cmed);
+	--cemphbg: #0881;
 	--cb: indianred; 
 }
 
@@ -35,9 +36,10 @@ html[data-theme='dark'] {
 	--cfg:   #cecbc4; --cbg:    #252220;
 	--cdark: #999;    --clight: #333;
 	--cmed:  #566;
-	/* --clink: #1ad; */
+	/* --clink: #1ad; --cemph: #0b9; */
 	--clink: indianred; 
-	--cemph: #0b9;    --cemphbg: #0b91;
+	--cemph: var(--cmed);
+	--cemphbg: #0b91;
 	--cb: indianred;
 }
 
@@ -47,9 +49,10 @@ html[data-theme='dark'] {
 		--cfg:   #cecbc4; --cbg:    #252220;
 		--cdark: #999;    --clight: #333;
 		--cmed:  #566;
-		/* --clink: #1ad; */
+		/* --clink: #1ad; --cemph: #0b9; */
 		--clink: indianred; 
-		--cemph: #0b9;    --cemphbg: #0b91;
+		--cemph: var(--cmed);
+		--cemphbg: #0b91;
 		--cb: indianred;
 	}	
 }
