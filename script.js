@@ -2,20 +2,24 @@ window.onload = function() {
     // Function to get query parameter value
     function getQueryParam(param) {
         let urlParams = new URLSearchParams(window.location.search);
+
         return urlParams.get(param);
     }
 
     // Function to get value from localStorage or query param
     function getParamValue(param) {
         let value = getQueryParam(param);
+
         if (value) {
             localStorage.setItem(param, value);
         } else {
             value = localStorage.getItem(param);
         }
+
         if (!value) {
             console.error(`ERROR: ${param} is not provided and not found in localStorage`);
         }
+        
         return value;
     }
 
@@ -25,14 +29,17 @@ window.onload = function() {
     let projId = getParamValue('projId');
     let rssUrl = getParamValue('rssUrl');
     let decodingUrl = getParamValue('decodingUrl');
+    let maxItems = getParamValue('maxItems') || 15;
 
     // If any of the required parameters are missing, stop execution
-    if (!apiKey || !orgId || !projId || !rssUrl || !decodingUrl) {
+    if (!apiKey || !orgId || !projId || !rssUrl || !decodingUrl || !maxItems) {
         if (!apiKey) console.error("ERROR: Missing: apiKey");
         if (!orgId) console.error("ERROR: Missing: orgId");
         if (!projId) console.error("ERROR: Missing: projId");
         if (!rssUrl) console.error("ERROR: Missing: rssUrl");
         if (!decodingUrl) console.error("ERROR: Missing: decodingUrl");
+        if (!maxItems) console.error("ERROR: Missing: maxItems");
+
         return;
     }
 
@@ -41,7 +48,6 @@ window.onload = function() {
 
     // OpenAI API URL
     const apiUrl = "https://api.openai.com/v1/chat/completions";
-    const maxItems = 15;
 
     // Fetch the Google News RSS feed
     fetch(rssUrl)
