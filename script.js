@@ -82,14 +82,18 @@ window.onload = function() {
                                 Highlight key words and phrases (e.g., names, institutes, locations, amounts) with 
                                 bold in the following text except news source at the end.
                                 At least 1 word must be made bold per summary. 
+                                
                                 IMPORTANT USE HTML <b> not Markdown tags!!!
                                 Example: <b>Biden</b> visited <b>Vietnam</b> today. 
+
+                                You must translate your responses to this language: ${language}
+                                
                                 INPUT TEXT: ${description}`;
 
                 console.log("Prompt: " + prompt);
 
                 // API request data
-                let systemPrompt = `You are a helpful assistant. You must translate your responses to this language: ${language}`
+                let systemPrompt = `You are a helpful assistant.`;
 
                 const data = {
                     model: "gpt-4o-mini",
