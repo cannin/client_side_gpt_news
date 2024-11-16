@@ -6,7 +6,7 @@ window.onload = function() {
     }
 
     // Function to get value from localStorage or query param
-    function getValue(param) {
+    function getParamValue(param) {
         let value = getQueryParam(param);
         if (value) {
             localStorage.setItem(param, value);
@@ -20,20 +20,19 @@ window.onload = function() {
     }
 
     // Get values from query params or localStorage
-    let apiKey = getValue('apikey');
-    let orgId = getValue('orgId');
-    let projId = getValue('projId');
-    let rssUrl = getValue('rssUrl');
-    let decodingUrl = getValue('decodingUrl');
+    let apiKey = getParamValue('apikey');
+    let orgId = getParamValue('orgId');
+    let projId = getParamValue('projId');
+    let rssUrl = getParamValue('rssUrl');
+    let decodingUrl = getParamValue('decodingUrl');
 
     // If any of the required parameters are missing, stop execution
     if (!apiKey || !orgId || !projId || !rssUrl || !decodingUrl) {
-        console.error("ERROR: Missing required parameter(s)");
-        if (!apiKey) console.error("Missing: apiKey");
-        if (!orgId) console.error("Missing: orgId");
-        if (!projId) console.error("Missing: projId");
-        if (!rssUrl) console.error("Missing: rssUrl");
-        if (!decodingUrl) console.error("Missing: decodingUrl");
+        if (!apiKey) console.error("ERROR: Missing: apiKey");
+        if (!orgId) console.error("ERROR: Missing: orgId");
+        if (!projId) console.error("ERROR: Missing: projId");
+        if (!rssUrl) console.error("ERROR: Missing: rssUrl");
+        if (!decodingUrl) console.error("ERROR: Missing: decodingUrl");
         return;
     }
 
