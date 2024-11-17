@@ -9,8 +9,6 @@ A client side application that returns the top stories from the Google News RSS 
 Various variables set by URL parameters:
 
 - apiKey: OpenAI API key used for authentication.
-- orgId: OpenAI API organization ID.
-- projId: OpenAI API project ID.
 - rssUrl: The URL of the RSS feed; built for: https://news.google.com/rss?hl=en-US&gl=US&ceid=US:en Needs a CORS proxy (https://corsproxy.io/) to download.
 - decodingUrl: A URL used for decoding the Google News URLs; code based on: https://gist.github.com/huksley/bc3cb046157a99cd9d1517b32f91a99e Some API that will return a decoded Google News URL; nice to have, not necessary. In forked code, calls to this API should be removed. 
 - maxItems: The maximum number of items to display (default is 15).
