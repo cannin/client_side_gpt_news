@@ -93,12 +93,9 @@ window.onload = function() {
                 console.log("Prompt: " + prompt);
 
                 // API request data
-                let systemPrompt = `You are a helpful assistant.`;
-
                 const data = {
                     model: "gpt-4o-mini",
                     messages: [
-                        { role: "system", content: systemPrompt },
                         { role: "user", content: prompt }
                     ]
                 };
@@ -109,9 +106,7 @@ window.onload = function() {
                         method: "POST",
                         headers: {
                             "Content-Type": "application/json",
-                            "Authorization": `Bearer ${apiKey}`,
-                            "OpenAI-Organization": orgId,
-                            "OpenAI-Project": projId
+                            "Authorization": `Bearer ${apiKey}`
                         },
                         body: JSON.stringify(data)
                     }),
