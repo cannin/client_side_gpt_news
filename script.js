@@ -25,18 +25,14 @@ window.onload = function() {
 
     // Get values from query params or localStorage
     let apiKey = getParamValue('apikey');
-    let orgId = getParamValue('orgId');
-    let projId = getParamValue('projId');
     let rssUrl = getParamValue('rssUrl');
     let decodingUrl = getParamValue('decodingUrl');
     let maxItems = getParamValue('maxItems') || 15;
     let language = getParamValue('language') || "english";
 
     // If any of the required parameters are missing, stop execution
-    if (!apiKey || !orgId || !projId || !rssUrl || !decodingUrl || !maxItems || !language) {
+    if (!apiKey || !rssUrl || !decodingUrl || !maxItems || !language) {
         if (!apiKey) console.error("ERROR: Missing: apiKey");
-        if (!orgId) console.error("ERROR: Missing: orgId");
-        if (!projId) console.error("ERROR: Missing: projId");
         if (!rssUrl) console.error("ERROR: Missing: rssUrl");
         if (!decodingUrl) console.error("ERROR: Missing: decodingUrl");
         if (!maxItems) console.error("ERROR: Missing: maxItems");
@@ -62,8 +58,8 @@ window.onload = function() {
             const xmlDoc = parser.parseFromString(str, "text/xml");
             const items = Array.from(xmlDoc.getElementsByTagName("item")).slice(0, maxItems);
 
-            // Iterate over each RSS item and send the description to the OpenAI API
-            items.forEach(item => {
+            // Create an array of promises for each item to maintain order
+            const itemPromises = items.map((item, index) => {
                 let description = item.getElementsByTagName("description")[0].textContent;
                 let link = item.getElementsByTagName("link")[0].textContent;
                 link = link.replace("?oc=5", "");
@@ -100,8 +96,8 @@ window.onload = function() {
                     ]
                 };
 
-                // Make both OpenAI and decoding API requests in parallel
-                Promise.all([
+                // Return a promise that resolves when the API requests complete
+                return Promise.all([
                     fetch(apiUrl, {
                         method: "POST",
                         headers: {
@@ -130,14 +126,31 @@ window.onload = function() {
                         summary += ` <a href='${decodedLink}' target='_blank'>[Link]</a>`;
                     }
 
-                    const listItem = document.createElement("li");
-                    listItem.innerHTML = summary;
-                    mainDiv.appendChild(listItem);
+                    return {
+                        index,
+                        listItemHtml: summary
+                    };
                 })
                 .catch(error => {
                     console.error("ERROR: Fetching summary or decoding link:", error);
                 });
             });
+
+            // Wait for all item promises to resolve and append in order
+            Promise.all(itemPromises)
+                .then(results => {
+                    results
+                        .filter(result => result !== undefined) // Filter out failed requests
+                        .sort((a, b) => a.index - b.index) // Sort by original order
+                        .forEach(result => {
+                            const listItem = document.createElement("li");
+                            listItem.innerHTML = result.listItemHtml;
+                            mainDiv.appendChild(listItem);
+                        });
+                })
+                .catch(error => {
+                    console.error("ERROR: Processing items:", error);
+                });
         })
         .catch(error => {
             console.error("ERROR: Fetching RSS feed:", error);
